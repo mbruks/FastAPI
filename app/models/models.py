@@ -11,3 +11,5 @@ class UserAge(BaseModel):
     name: str
     age: int
     is_adult: bool = False
+
+

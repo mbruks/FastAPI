@@ -8,6 +8,7 @@ app = FastAPI()
 async def user_root():
     return users
 
+
 # тут добавили проверку данных на основании модели
 @app.post("/user")
 async def user_age(user: UserAge):
@@ -16,3 +17,15 @@ async def user_age(user: UserAge):
         return user
     else:
         return user
+
+    fake_users = {
+        1: {"username": "Mary", "firstname": "Latyn"},
+        2: {"username": "Nina", "firstname": "Buryt"},
+    }
+
+# по id находим пользователя и получаем с помощью get запроса
+    @app.get("/fake_users/{user_id}")
+    def read_user(user_id: int):
+        if user_id in fake_users:
+            return fake_users[user_id]
+            return {"error": "User not found"}
