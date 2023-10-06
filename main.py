@@ -18,14 +18,19 @@ async def user_age(user: UserAge):
     else:
         return user
 
-    fake_users = {
-        1: {"username": "Mary", "firstname": "Latyn"},
-        2: {"username": "Nina", "firstname": "Buryt"},
-    }
+fake_users = {
+    1: {"username": "Mary", "firstname": "Latyn"},
+    2: {"username": "Nina", "firstname": "Buryt"},
+}
 
 # по id находим пользователя и получаем с помощью get запроса
-    @app.get("/fake_users/{user_id}")
-    def read_user(user_id: int):
-        if user_id in fake_users:
-            return fake_users[user_id]
-            return {"error": "User not found"}
+@app.get("/fake_users/{user_id}")
+def read_user(user_id: int):
+    if user_id in fake_users:
+        return fake_users[user_id]
+        return {"error": "User not found"}
+
+
+@app.get("/limit_users/")
+def limit_users(limit: int = 10):
+    return dict(list(fake_users.items())[:limit])
