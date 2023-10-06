@@ -12,4 +12,6 @@ class UserAge(BaseModel):
     age: int
     is_adult: bool = False
 
-
+class Feedback(BaseModel):
+    name: str
+    message: str

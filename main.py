@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.models.models import User, UserAge
+from app.models.models import User, UserAge, Feedback
 
 users = User(id = 1, name = "Mary")
 user = UserAge(id=1, name = "Mary", age = 8, is_adult = False)
@@ -34,3 +34,15 @@ def read_user(user_id: int):
 @app.get("/limit_users/")
 def limit_users(limit: int = 10):
     return dict(list(fake_users.items())[:limit])
+
+# маршрут для отправки пользователями отзывов
+lst = []
+@app.post("/feedback")
+async def feedback(feedback: Feedback):
+    lst.append({"name": feedback.name, "comments": feedback.message})
+    return f"Feedback received. Thank you, {feedback.name}!"
+
+# получение обратного ответа
+@app.get("/comments")
+async def show_feedback():
+    return lst
