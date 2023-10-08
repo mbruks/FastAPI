@@ -58,3 +58,9 @@ async def read_items() -> list[Item]: # тут мы не принимаем ни
         Item(name="Portal Gun", price=42.0),
         Item(name="Plumbus", price=32.0),
     ]
+
+
+fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+@app.get("/fake_items/")
+async def read_item(skip: int = 0, limit: int = 10):
+    return fake_items_db[skip: skip + limit]
