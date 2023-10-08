@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.models.models import User, UserAge, Feedback
+from app.models.models import User, UserAge, Feedback, Item
 
 users = User(id = 1, name = "Mary")
 user = UserAge(id=1, name = "Mary", age = 8, is_adult = False)
@@ -46,3 +46,15 @@ async def feedback(feedback: Feedback):
 @app.get("/comments")
 async def show_feedback():
     return lst
+
+@app.post("/items/")
+async def create_item(item: Item) -> Item: # тут мы передали в наш обработчик Pydantic модель, чтобы она проверяла все запросы на соответствие этой модели (все поля и типы данных в них должны соответствовать модели
+    return item
+
+
+@app.get("/items/")
+async def read_items() -> list[Item]: # тут мы не принимаем никаких данных, но указываем, что возвращаться будет список, содержащий в себе Pydantic модели
+    return [
+        Item(name="Portal Gun", price=42.0),
+        Item(name="Plumbus", price=32.0),
+    ]
