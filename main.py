@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from app.models.models import User, UserAge, Feedback, Item
+from app.models.models import User, UserAge, Feedback, Item, UserCreate
 
-users = User(id = 1, name = "Mary")
+#users = User(id = 1, name = "Mary")
 user = UserAge(id=1, name = "Mary", age = 8, is_adult = False)
+users: list[UserCreate] = []
 app = FastAPI()
 @app.get("/users", response_model=User)# тут указали модель (формат) ответа
 async def user_root():
@@ -64,3 +65,12 @@ fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"
 @app.get("/fake_items/") #http://127.0.0.1:8000/items/?skip=0&limit=10
 async def read_item(skip: int = 0, limit: int = 10):
     return fake_items_db[skip: skip + limit]
+
+@app.post("/create_user")
+async def func_user_create(new_user: UserCreate):
+    users.append(new_user)
+    return new_user
+
+@app.get("/show_all_users")
+async def show_users():
+    return {"users": users}
