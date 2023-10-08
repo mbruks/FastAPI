@@ -29,7 +29,7 @@ fake_users = {
 def read_user(user_id: int):
     if user_id in fake_users:
         return fake_users[user_id]
-        return {"error": "User not found"}
+    return {"error": "User not found"}
 
 
 @app.get("/limit_users/")
