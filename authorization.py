@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import FastAPI, Depends, status, HTTPException
 from pydantic import BaseModel
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -30,3 +32,11 @@ def get_user_from_db(username: str):
 @app.get("/protected_resource/")
 def get_protected_resource(user: User = Depends(authenticate_user)):
     return {"message": "You have access to the protected resource!", "user_info": user}
+
+
+@app.get('/login')
+def get_login(creditials: Annotated[HTTPBasicCredentials, Depends(security)]):
+    user = get_user_from_db(creditials.username)
+    if user is None or user.password != creditials.password:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    return "You got my secret, welcome"
